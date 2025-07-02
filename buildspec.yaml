@@ -8,11 +8,17 @@ env:
       - echo Entered the pre_build phase...
       - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
       - IMAGE_TAG=$(date +%Y%m%d%H%M%S)
+    finally:
+      - ehco phases err
   build:
     commands:
       - echo Entered the build phase...
       - docker build -t 490004619903.dkr.ecr.$AWS_REGION.amazonaws.com/app:$IMAGE_TAG .
-  post_build:
+    finally:
+      - ehco build err
+  push:
     commands:
-      - echo Entered the post_build phase...
+      - echo Entered the push image phase...
       - docker push 490004619903.dkr.ecr.$AWS_REGION.amazonaws.com/app:$IMAGE_TAG
+    finally:
+      - ehco push image err
