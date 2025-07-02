@@ -3,9 +3,12 @@ env:
   variables:
     AWS_REGION: "us-east-1"
     AWS_ACCOUNT_ID: "490004619903"
-  exported-variables: 
-    - IMAGE_TAG
-  phases:
+
+exported-variables: 
+  - IMAGE_TAG
+
+phases:
+  pre_build:
     commands:
       - echo Entered the pre_build phase...
       - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
@@ -19,7 +22,7 @@ env:
       - docker build -t 490004619903.dkr.ecr.$AWS_REGION.amazonaws.com/app:latest .
     finally:
       - echo build err
-  push:
+  post_build:
     commands:
       - echo Entered the push image phase...
       - docker push 490004619903.dkr.ecr.$AWS_REGION.amazonaws.com/app:$IMAGE_TAG
