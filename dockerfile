@@ -9,5 +9,5 @@ WORKDIR /app
 COPY --from=build /build/libs /app/libs
 COPY --from=build /build /app
 ENV PYTHONPATH=/app/libs
-EXPOSE 8080
+EXPOSE 80
 CMD [ "python", "app.py" ]
