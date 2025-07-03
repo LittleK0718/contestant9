@@ -8,11 +8,11 @@ def meow_counter():
     # Create file if it doesn't exist
     if not os.path.exists('/mnt/cat.txt'):
         with open('/mnt/cat.txt', 'w') as f:
-            f.write('meow\n')
+            f.write('awa\n')
     else:
         # Append meow to existing file
         with open('/mnt/cat.txt', 'a') as f:
-            f.write('meow\n')
+            f.write('awa\n')
     
     # Read and return all meows
     with open('/mnt/cat.txt', 'r') as f:
