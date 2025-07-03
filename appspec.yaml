@@ -6,4 +6,4 @@ Resources:
         TaskDefinition: "arn:aws:ecs:us-east-1:490004619903:task-definition/ECS-Task-definition-family:4"
         LoadBalancerInfo:
           ContainerName: "ecs"
-          ContainerPort: 80
+          ContainerPort: 8080
