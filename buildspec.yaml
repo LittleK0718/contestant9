@@ -3,10 +3,8 @@ env:
   variables:
     AWS_REGION: "us-east-1"
     AWS_ACCOUNT_ID: "490004619903"
-
-exported-variables: 
-  - IMAGE_TAG
-
+  exported-variables:
+    - IMAGE_TAG
 phases:
   pre_build:
     commands:
@@ -18,14 +16,19 @@ phases:
   build:
     commands:
       - echo Entered the build phase...
-      - docker build -t 490004619903.dkr.ecr.$AWS_REGION.amazonaws.com/app:$IMAGE_TAG .
-      - docker build -t 490004619903.dkr.ecr.$AWS_REGION.amazonaws.com/app:latest .
+      - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/app:$IMAGE_TAG .
     finally:
       - echo build err
   post_build:
     commands:
       - echo Entered the push image phase...
-      - docker push 490004619903.dkr.ecr.$AWS_REGION.amazonaws.com/app:$IMAGE_TAG
-      - docker push 490004619903.dkr.ecr.$AWS_REGION.amazonaws.com/app:latest
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/app:$IMAGE_TAG
+      - docker tag $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/app:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/app:latest
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/app:latest
+      - echo $IMAGE_TAG > image_tag.txt
     finally:
       - echo push image err
+artifacts:
+  files:
+    - image_tag.txt
+  discard-paths: yes
