@@ -31,5 +31,5 @@ phases:
 artifacts:
   files:
     - image_tag.txt
-    - appspec.yml
+    - appspec.yaml
   discard-paths: yes
