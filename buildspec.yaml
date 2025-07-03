@@ -11,14 +11,10 @@ phases:
       - echo Entered the pre_build phase...
       - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
       - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
-    finally:
-      - echo phases err
   build:
     commands:
       - echo Entered the build phase...
       - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/app:$IMAGE_TAG .
-    finally:
-      - echo build err
   post_build:
     commands:
       - echo Entered the push image phase...
@@ -26,8 +22,6 @@ phases:
       - docker tag $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/app:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/app:latest
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/app:latest
       - echo $IMAGE_TAG > image_tag.txt
-    finally:
-      - echo push image err
 artifacts:
   files:
     - image_tag.txt
